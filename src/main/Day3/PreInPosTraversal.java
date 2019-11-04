@@ -91,7 +91,7 @@ public class PreInPosTraversal {
     /**
      * 中序遍历的非递归实现：
      * 和递归的逻辑一样，先将左节点一直压入栈中，之后通过判断head是否为空来决定是否继续向下(.next），当左节点都为空的时候结束（这一步就完成了递归的 MidOrderRecur(head.left);）
-     * 之后如何head为空了，就从栈中取出（pop）上一个压栈的方法，输出，将其指向右节点，就能实现中序遍历。（因为如果右边又有左节点就又会压入栈中，所以这一步就结束了）
+     * 之后如果head为空了，就从栈中取出（pop）上一个压栈的方法，输出，将其指向右节点，就能实现中序遍历。（因为如果右边又有左节点就又会压入栈中，所以这一步就结束了）
      * @param head
      */
     public static void midOrderUnRecur(Node head) {
@@ -99,8 +99,8 @@ public class PreInPosTraversal {
         if (head == null)
             return;
         Stack<Node> stack = new Stack<>();
-        while (!stack.isEmpty() || head != null) {
-            if (head != null) { //只有为空的时候才压
+        while (!stack.isEmpty() || head != null) {  //这个head!=null 是因为第一次进来的时候需要判断
+            if (head != null) { //只有不为空的时候才压
                 stack.push(head);
                 head = head.left;  //一直向左并压栈
             } else {  //即到达了最底的时候，输出并转到右节点（像递归一样）

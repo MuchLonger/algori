@@ -87,7 +87,7 @@ public class SerialazeAndReconstructTree {
         String res=head.value+"!";
         Queue<Node> queue=new LinkedList<>();
         queue.offer(head);
-        while(!queue.isEmpty()){
+        while(!queue.isEmpty()){  //这一步，每进行一个while就是将下一层的所有节点都放入队列中
             head=queue.poll();
             if(head.left!=null){
                 res += head.left.value+"!";
