@@ -6,8 +6,9 @@ import java.util.List;
 /**
  * @description: 并查集：
  * 解决两个问题：
- * 1）给定两个节点，判断是否是同个列表中的节点
- * 2）给定两个节点，将两个节点所在的链合并
+ * 1）给定两个节点，判断两个节点是否是同个列表中的节点
+ * 2）给定两个节点，将两个节点合并
+ * 可以直接使用Set时间，但是合并时时间复杂度较大。
  * @Time: 2019/11/7 22:46
  */
 public class UnionFind {
@@ -36,55 +37,58 @@ public class UnionFind {
             fatherMap = new HashMap<>();
             sizeMap = new HashMap<>();
             for (Node node : nodes) {
-                fatherMap.put(node,node);  //当前节点的父节点是自己
-                sizeMap.put(node,1);   //当前节点所在链的节点只有自己（1个）
+                fatherMap.put(node, node);  //当前节点的父节点是自己
+                sizeMap.put(node, 1);   //当前节点所在链的节点只有自己（1个）
             }
         }
 
         /**
-         * 实例化好到头结点的路径
+         * 实例化好当前节点到头结点的路径
+         *
          * @param node
          * @return
          */
-        private Node findHead(Node node){
-            Node father=fatherMap.get(node);     //当node为空时就会退出递归
-            if(father!=node){   //递归向上查找节点
-                father=findHead(father);
+        private Node findHead(Node node) {
+            Node father = fatherMap.get(node);     //当node为空时就会退出递归
+            if (father != node) {   //递归向上查找节点
+                father = findHead(father);
             }
-            fatherMap.put(node,father);  //这还在递归的环节，于是会将上一个节点存入为父节点
+            fatherMap.put(node, father);  //这还在递归的环节，于是会将上一个节点存入为父节点
             return father;
         }
 
         /**
          * 判断是否来自一个集合。因为如果来自一个集合最后头节点一定会相同，如果头结点不相同那就不是同一个集合。
+         *
          * @param a
          * @param b
          * @return
          */
-        public boolean isSameSet(Node a,Node b){
-            return findHead(a)==findHead(b);
+        public boolean isSameSet(Node a, Node b) {
+            return findHead(a) == findHead(b);
         }
 
         /**
          * 将两个节点融合。这里还有一个优化没实现，就是每次插入都会沿着当前节点向上拆解，然后拆出来的节点重新连向头结点（没实现）
+         *
          * @param a
          * @param b
          */
-        public void union(Node a,Node b){
-            if(a==null||b==null)
+        public void union(Node a, Node b) {
+            if (a == null || b == null)
                 return;
 
-            Node aHead=findHead(a); //找到a的头结点
-            Node bHead=findHead(b); //找到b的头结点
+            Node aHead = findHead(a); //找到a的头结点
+            Node bHead = findHead(b); //找到b的头结点
             if (aHead != bHead) {  //头结点不一样才会融合（不然合个屁）
-                int aNodeSize=sizeMap.get(aHead);
-                int bNodeSize=sizeMap.get(bHead);
-                if(aNodeSize<=bNodeSize){
-                    fatherMap.put(aHead,bHead);  //当a链的长度小于b链的长度的时候，就将a链置为b的头结点。少的连向多的
-                    sizeMap.put(bHead,aNodeSize+bNodeSize);
-                }else{
-                    fatherMap.put(bHead,aHead);  //如果a链比较长，就和上面相反，将a链置为b的头节点
-                    sizeMap.put(aHead,aNodeSize+bNodeSize);
+                int aNodeSize = sizeMap.get(aHead);
+                int bNodeSize = sizeMap.get(bHead);
+                if (aNodeSize <= bNodeSize) {
+                    fatherMap.put(aHead, bHead);  //当a链的长度小于b链的长度的时候，就将a链置为b的头结点。少的连向多的
+                    sizeMap.put(bHead, aNodeSize + bNodeSize);
+                } else {
+                    fatherMap.put(bHead, aHead);  //如果a链比较长，就和上面相反，将a链置为b的头节点
+                    sizeMap.put(aHead, aNodeSize + bNodeSize);
                 }
             }
         }
