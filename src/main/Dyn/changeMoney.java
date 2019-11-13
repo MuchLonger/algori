@@ -1,5 +1,7 @@
 package Dyn;
 
+import java.util.Map;
+
 /**
  * @description: 找钱问题：给定一个数组，所有数字为正数，且数组的值表示钞票的面值。再给定一个钱数，表示找钱有几种方法
  * [5,10,20,1] 1000：表示的是有5,10,20,100种面值的钞票，要找成1000块 有几种找法
@@ -23,6 +25,12 @@ public class changeMoney {
             return 0;
         int[][] recordArr = new int[arr.length + 1][aim + 1];  //注意要加1，因为需要查找到下一个的面额和期望钱数
         return processWithRecurAndArr(arr, 0, aim, recordArr);
+/*
+    public int coins1(int[] arr, int aim) {
+        if (arr == null || arr.length == 0 || aim < 0)
+            return 0;
+        return processWithReCur(arr, 0, aim);
+*/
     }
 
     /**
@@ -42,6 +50,7 @@ public class changeMoney {
      * @return
      */
     private static int processWithReCur(int[] arr, int index, int aim) {
+
         int methodCount = 0;
         if (index == arr.length) {
             methodCount = aim == 0 ? 1 : 0;  //如果最后指正好取整，那就多一种方法，再返回
@@ -66,6 +75,7 @@ public class changeMoney {
      */
     private static int processWithRecurAndArr(int[] arr, int index, int aim, int[][] recordArr) {
         int result = 0;
+        int recordCurAim=aim-arr[index];  //记录
         if (index == arr.length) {
             result = aim == 0 ? 1 : 0; //能整除次数就加一
         } else {
@@ -87,5 +97,14 @@ public class changeMoney {
 
     public static void main(String[] args) {
         System.out.println(coins1(arr, 1000));
+                totalValue = recordMap.get(aim-);
+                if (totalValue != 0) {
+                    result += totalValue == -1 ? 0 : totalValue;
+                } else {
+                    result += processWithRecurAndMap(arr, index + 1, aim - arr[index] + 1, recordMap);
+                }
+            }
+            recordMap.put((aim-index),result);
+        }
     }
 }
