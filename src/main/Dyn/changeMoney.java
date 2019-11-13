@@ -1,7 +1,5 @@
 package Dyn;
 
-import java.util.Map;
-
 /**
  * @description: 找钱问题：给定一个数组，所有数字为正数，且数组的值表示钞票的面值。再给定一个钱数，表示找钱有几种方法
  * [5,10,20,1] 1000：表示的是有5,10,20,100种面值的钞票，要找成1000块 有几种找法
@@ -20,10 +18,11 @@ public class changeMoney {
      * @param aim 找钱数
      * @return
      */
-    public int coins1(int[] arr, int aim) {
+    public static int coins1(int[] arr, int aim) {
         if (arr == null || arr.length == 0 || aim < 0)
             return 0;
-        return processWithReCur(arr, 0, aim);
+        int[][] recordArr = new int[arr.length + 1][aim + 1];  //注意要加1，因为需要查找到下一个的面额和期望钱数
+        return processWithRecurAndArr(arr, 0, aim, recordArr);
     }
 
     /**
@@ -42,7 +41,7 @@ public class changeMoney {
      * @param aim   找多少钱
      * @return
      */
-    private int processWithReCur(int[] arr, int index, int aim) {
+    private static int processWithReCur(int[] arr, int index, int aim) {
         int methodCount = 0;
         if (index == arr.length) {
             methodCount = aim == 0 ? 1 : 0;  //如果最后指正好取整，那就多一种方法，再返回
@@ -56,30 +55,37 @@ public class changeMoney {
     }
 
     /**
-     * 计算流程和递归一样，但是加入了一个map来保存每次递归计算后的结果，这样可以避免重复计算
+     * 计算流程和递归一样，但是加入了一个map来保存每次递归计算后的结果，这样可以避免重复计算。
      *
+     * 个人总结：存的是当前（存当前 面值方案 有几种找法），取的是下次（取下一个 面值方案 的找法）
      * @param arr       面值数组
      * @param index     面值下标
      * @param aim       还要计算多少钱
-     * @param recordMap 计算每一笔钱
+     * @param recordArr 使用二维数组记录每一笔钱，用来去重。recordArr[i][j]：i表示面值，j表示还要多少钱
      * @return
      */
-    private int processWithRecurAndMap(int[] arr, int index, int aim, Map<Integer, Integer> recordMap) {
+    private static int processWithRecurAndArr(int[] arr, int index, int aim, int[][] recordArr) {
         int result = 0;
-        int recordCurAim=aim-arr[index];  //记录
         if (index == arr.length) {
             result = aim == 0 ? 1 : 0; //能整除次数就加一
         } else {
             int totalValue = 0;
             for (int i = 0; i <= aim / (arr[index]); i++) {
-                totalValue = recordMap.get(aim-);
-                if (totalValue != 0) {
+                totalValue = recordArr[index + 1][aim - arr[index] * i]; //下一个面值 和 下一个期望找钱数 构成的就是下次会有多少种找法（注意，一维数组中的存放位置 必须 是面值的倍数
+                if (totalValue != 0) {  // 下一个面值有值，直接取
+                    //先设置为-1，再在查找时判断是否为-1，如果为-1就返回0，这样的目的是因为默认的数组值为0，所以需要区分
                     result += totalValue == -1 ? 0 : totalValue;
-                } else {
-                    result += processWithRecurAndMap(arr, index + 1, aim - arr[index] + 1, recordMap);
+                } else {  //如果下一个面值没有值
+                    result += processWithRecurAndArr(arr, index + 1, aim - arr[index] * i, recordArr);
                 }
             }
-            recordMap.put((aim-index),result);
         }
+        //先设置为-1，再在查找时判断是否为-1，如果为-1就返回0，这样的目的是因为默认的数组值为0，所以需要区分
+        recordArr[index][aim] = result == 0 ? -1 : result;  //这里存的是 当前面值 和 期望找钱数。
+        return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(coins1(arr, 1000));
     }
 }
