@@ -97,14 +97,6 @@ public class changeMoney {
 
     public static void main(String[] args) {
         System.out.println(coins1(arr, 1000));
-                totalValue = recordMap.get(aim-);
-                if (totalValue != 0) {
-                    result += totalValue == -1 ? 0 : totalValue;
-                } else {
-                    result += processWithRecurAndMap(arr, index + 1, aim - arr[index] + 1, recordMap);
-                }
-            }
-            recordMap.put((aim-index),result);
-        }
+
     }
 }

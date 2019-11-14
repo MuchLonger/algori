@@ -2,6 +2,7 @@ package Day4;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * @description: 并查集：
@@ -43,18 +44,38 @@ public class UnionFind {
         }
 
         /**
-         * 实例化好当前节点到头结点的路径
+         * 实例化好当前节点到头结点的路径（递归版）
          *
          * @param node
          * @return
          */
         private Node findHead(Node node) {
-            Node father = fatherMap.get(node);     //当node为空时就会退出递归
-            if (father != node) {   //递归向上查找节点
+            Node father = fatherMap.get(node);     //当node为空时就会退出递归，查找当前node的父节点（之所以是这样，是因为每个节点都是穿自己的头结点）
+            if (father != node) {   //递归向上查找节点。找到最顶部节点。只有当 当前node等于父节点才结束（就是找到了父节点），
                 father = findHead(father);
             }
-            fatherMap.put(node, father);  //这还在递归的环节，于是会将上一个节点存入为父节点
+            fatherMap.put(node, father);  //这还在递归的环节，先将当前节点找到的父节点（father），存入到map中并原封不动的返回，因为还在递归环节，子节点的father也指向为当前father。这就实现了以node向上的Node的父节点都是father节点
             return father;
+        }
+        /**
+         * 实例化好当前节点到头结点的路径（非递归版）
+         *
+         * @param node
+         * @return
+         */
+        private Node findHeadNoRecur(Node node) {
+            Stack<Node> stack=new Stack<>();
+            Node cur=node;  //记录当前节点
+            Node parent=fatherMap.get(cur);
+            while(cur!=parent){  //不等于父节点，就代表向上还有节点，
+                stack.push(cur);  //沿途所有节点放入栈中，到时再取出
+                cur=parent;
+                parent=fatherMap.get(cur);  //继续向前
+            }
+            while (!stack.isEmpty()) {
+                fatherMap.put(stack.pop(),parent);  //取出父节点
+            }
+            return parent;
         }
 
         /**
