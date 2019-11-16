@@ -11,7 +11,6 @@ import java.util.PriorityQueue;
  * 做法：将cost和profit绑定成一个对象，把所有对象根据cost值放入一个小根堆中，给定启动资金时，在小根堆中弹出 所有cost小于启动资金 的对象，
  * 然后再将这些对象根据profit值放入大根堆中，依次取出大根堆的堆顶元素进行相加即可。
  *
- *其实不一定要大根堆小根堆，直接
  * @Time: 2019/11/14 22:36
  */
 public class IPO {
