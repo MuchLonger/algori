@@ -15,7 +15,7 @@ import java.util.PriorityQueue;
  */
 public class IPO {
 
-    public static class Project{  //构建一个由cost和profit的项目
+    public static class Project{  //构建一个由cost和profit的项目 4 3 6 9 2 1  <0
         private int cost;
         private int profit;
 

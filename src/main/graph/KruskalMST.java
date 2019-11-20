@@ -1,21 +1,25 @@
-package Day4;
+package graph;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import graph.graphStructure.Edge;
+import graph.graphStructure.Graph;
+import graph.graphStructure.Node;
+
+import java.util.*;
 
 /**
- * @description: 并查集：
- * 解决两个问题：
- * 1）给定两个节点，判断两个节点是否是同个列表中的节点
- * 2）给定两个节点，将两个节点合并
- * 可以直接使用Set时间，但是合并时时间复杂度较大。
- * @Time: 2019/11/7 22:46
+ * @description: 如何生成最小生成树（kruskal方法），问题描述：在一个无向图中，根据边 “最小权重的”生成一个能连通所有节点的图。
+ * 与Prim算法的区别的比较的是所有的边。
+ * <p>
+ *         1
+ *    ↗ ②\   ↖
+ * ① \    \    \②         构建1,2,3,4个点的最小生成树。注意虽然有箭头，但是是无向图（无向图）
+ *    \ ① 2  ②\           如图：1->2权重是2,1->3权重是1，2->3权重是1...
+ *    \ ↗ ③↖ \           根据权重的最小生成树是1324
+ *     3 ----- 4
+ * 思路：每到一个节点都选择最小权重的边，如果连接这个边之后，和当前节点没有形成回路，就取这条边。
+ * @Time: 2019/11/19 23:17
  */
-public class UnionFind {
-    public static class Node {
-        //随便实现，
-    }
+public class KruskalMST {
 
     /**
      * 并查集
@@ -23,7 +27,7 @@ public class UnionFind {
      * 求 两个节点是否在一个节点链中，就只需向上找father节点，如何头结点一致，就在一条链上。
      * 只需要接受一个节点有多个链就好理解。
      */
-    public  static  class UnionFindSet {
+    public static class UnionFindSet {
         //        保存的map的 key是当前节点 value是当前节点的父节点
         public HashMap<Node, Node> fatherMap;
         //        当前节点所在的集合一共有多少个节点，key：Node value：Node占当前链几个节点
@@ -57,6 +61,7 @@ public class UnionFind {
             fatherMap.put(node, father);  //这还在递归的环节，先将当前节点找到的父节点（father），存入到map中并原封不动的返回，因为还在递归环节，子节点的father也指向为当前father。这就实现了以node向上的Node的父节点都是father节点
             return father;
         }
+
         /**
          * 实例化好当前节点到头结点的路径（非递归版）
          *
@@ -64,16 +69,16 @@ public class UnionFind {
          * @return
          */
         private Node findHeadNoRecur(Node node) {
-            Stack<Node> stack=new Stack<>();
-            Node cur=node;  //记录当前节点
-            Node parent=fatherMap.get(cur);
-            while(cur!=parent){  //不等于父节点，就代表向上还有节点，
+            Stack<Node> stack = new Stack<>();
+            Node cur = node;  //记录当前节点
+            Node parent = fatherMap.get(cur);
+            while (cur != parent) {  //不等于父节点，就代表向上还有节点，
                 stack.push(cur);  //沿途所有节点放入栈中，到时再取出
-                cur=parent;
-                parent=fatherMap.get(cur);  //继续向前
+                cur = parent;
+                parent = fatherMap.get(cur);  //继续向前
             }
             while (!stack.isEmpty()) {
-                fatherMap.put(stack.pop(),parent);  //取出父节点
+                fatherMap.put(stack.pop(), parent);  //取出父节点
             }
             return parent;
         }
@@ -114,5 +119,33 @@ public class UnionFind {
             }
         }
 
+    }
+
+    /**
+     * 使用并查集解决最小生成树问题
+     * <p>
+     * 思路：先将一个图中所有节点构成一个并查集，然后将所有边从小到大排序（这现在是使用小根堆），依次遍历所有边
+     * 如果这个边构成了一个回路，如果没有构成回路就加入到并查集中。
+     *
+     * @param graph
+     * @return  返回所有边
+     */
+    public static Set<Edge> kruskalMst(Graph graph) {
+        // 构建一个并查集
+        UnionFindSet unionFind = new UnionFindSet((List<Node>) graph.nodes.values());
+        // 根据边权重从小到大排
+        PriorityQueue<Edge> priorityQueue = new PriorityQueue<>((o1, o2) -> o1.weight - o2.weight);
+        for (Edge edge : graph.edges) { //所有边都要排序
+            priorityQueue.add(edge);
+        }
+        HashSet<Edge> result = new HashSet<>();
+        while (!priorityQueue.isEmpty()) { // 从小到大遍历所有边（不必按图的顺序，因为本来就是需要最小权重优先，权重高的只要不构成环或已被选中迟早也能遍历上）
+            Edge edge = priorityQueue.poll(); // 弹出一条边
+            if (!unionFind.isSameSet(edge.from, edge.to)) {  // 如果这条边和开始的节点没有连成环（就是不在同一条链上）。因为一个边有两个节点，需要考察这两个点是否是一个集合
+                result.add(edge); //输出这个节点
+                unionFind.union(edge.from, edge.to); // 连接这两个节点，连接的是from和to
+            }
+        }
+        return result;
     }
 }
