@@ -26,12 +26,13 @@ public class quickSort {
         while (L < tail) {
             if (arr[L] < arr[R]) { //小于arr[R]的
                 MathUitl.swap(++hand, L++, arr);
-            } else if (arr[L] > arr[R]) {  //大于arr[R]的
+            } else if (arr[L] > arr[R]) {  //大于arr[R]的，之所以L不用++，是因为当相等的时候会自动++
                 MathUitl.swap(--tail, L, arr);
             } else {
                 L++;
             }
         }
+        // 设置回等于区域（因为就是按照R来划分的，tail的位置就是等于区域）
         MathUitl.swap(tail,R,arr);
 //        {0,hand} 小于区域， {hand,tail}等于区域，{tail,R}大于区域
         return new int[]{hand+1,tail};

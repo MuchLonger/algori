@@ -1,8 +1,7 @@
 import Util.ArrUtil;
-import Util.MathUitl;
 import org.junit.Test;
 
-import static Day1.BulSort.bulSort;
+import static learning.Day1.BulSort.bulSort;
 import static Util.ArrUtil.*;
 
 /**

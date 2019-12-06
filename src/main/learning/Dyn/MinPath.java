@@ -95,7 +95,7 @@ public class MinPath {
         // 这个就是常规值的赋值，因为是逆着来求，所以值就是 比较上面和左边选择最小的（因为上一步是走右还是走左），加上当前位置的和
         for (int i = 1; i < row; i++) {
             for (int j = 1; j < col; j++) {
-                dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + matrix[i][j];
+                dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + matrix[i][j]; //取左或取右
             }
         }
         // 返回右下角
