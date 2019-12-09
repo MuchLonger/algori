@@ -5,7 +5,7 @@ package codeBook.second_part_LinkArray;
  * 解法：last追head，如果追到就是最后的那个节点。没追到就向前一步，这里的向前一步是last.next然后head.next=last，这样就能一起向前
  * @Time: 2019/12/5 16:50
  */
-public class _6_josephusKill {
+public class _6_JosephusKill {
     public Node josephusKill(Node head, int k) {
         if (head == null || head.next == head || k < 1) { //不为空，不为空环，k不小于1
             throw new RuntimeException("参数出错");

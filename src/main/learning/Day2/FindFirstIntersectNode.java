@@ -10,7 +10,7 @@ import java.util.HashSet;
  * 方法一：使用HashSet来判断：遍历一次链表，将遍历的Node先判断HashSet是否存在，如果存在就有环，并且这个存在的节点就是这个环的起始点，直接return它。如果不存在就放入。一直遍历到结束都没有return就无环。
  * 方法二：使用两个节点：快节点和慢节点，快节点一次走两步，慢节点一次走一步，当两者相遇（==）的时候，快节点回到head节点（即开头节点）并且变成一次走一步，当快节点再次与慢节点相遇（==）的时候就是两个节点环的起始点。（这个方法死记住！！）
  * <p>
- * 2）如果两条链表都无环（即两条链返回null）：那拓扑图只有一种情况：Y，像这个Y一样汇合。也是两种方法：
+ * 2）如果两条链表都无环（即两条链返回null）求是否相交：那拓扑图只有一种情况：Y，像这个Y一样汇合。也是两种方法：
  * 方法一：使用HashSet：将链表一所有Node放入Set中，再遍历链表二，使用contains方法，如果为true就有相交节点，直接return 当前节点。
  * 方法二：使用快慢节点：先遍历链表一得到链表一的长度和尾节点，再遍历链表二得到链表二的长度和尾节点。如果两个尾节点不相等，那肯定没有交点(Y尾节点肯定汇合)。
  * 如果相等，再判断链表一长还是链表二长。假设当前链表二长，那用链表二的长度减链表一的长度，得到差值，让长链表（链表二）先走这个差值的步数，再开始链表一和链表二同时遍历，当两者相遇就是交点。
@@ -160,7 +160,7 @@ public class FindFirstIntersectNode {
 
     /**
      * 判断是否为环并返回环开始节点，使用Set的方式
-     * O（N） O（1）
+     * O（N） O（N）
      *
      * @param head
      * @return 环开始节点
@@ -190,13 +190,13 @@ public class FindFirstIntersectNode {
         HashSet<Node> set = new HashSet<>();
         while (head1.next != null) {
             set.add(head1);
-            head1=head1.next;
+            head1 = head1.next;
         }
         while (head2.next != null) {
             if (set.contains(head2)) {
                 return head2;
             }
-            head2=head2.next;
+            head2 = head2.next;
         }
         return null;
     }

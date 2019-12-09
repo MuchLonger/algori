@@ -73,7 +73,7 @@ public class HelFlagLinkList {
                     eqHeadStart = head;
                     eqHeadEnd = head;
                 } else {
-                    eqHeadStart.next = head;
+                    eqHeadEnd.next = head;
                     eqHeadEnd = head;  //将尾节点一直置空
                 }
             } else {
@@ -134,8 +134,8 @@ public class HelFlagLinkList {
         head1.next.next.next.next.next = new Node(2);
         head1.next.next.next.next.next.next = new Node(5);
         ArrUtil.printLinkedList(head1);
-        head1 = listPartition1(head1, 4);
-//        head1 = listPartition2(head1, 5);
+//        head1 = listPartition1(head1, 4);
+        head1 = listPartition2(head1, 5);
         ArrUtil.printLinkedList(head1);
     }
 }

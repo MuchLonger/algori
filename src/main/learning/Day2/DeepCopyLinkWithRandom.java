@@ -4,7 +4,7 @@ package learning.Day2;
 import java.util.HashMap;
 
 /**
- * @description: 一个全新的Node，内有next和randomom指针，next指向下一个，randomom指向任意一个。问题：深拷贝一个链表。
+ * @description: 一个全新的Node，内有next和randomom指针，next指向下一个，random指向任意一个。问题：深拷贝一个链表。
  * <p>
  * 理解题目：假设有链表有A，B，C（且都有value,next,randomom字段），相应深拷贝这个链表，就将需要重新生成（new）A',B',C'并组成赋值，
  * 这样就会产生困难，因为A的next指向的是B，而A’的next也需要指向B’，而不是B！借助Map就能实现一一对应，让A对应A’让B对应B’，
