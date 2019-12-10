@@ -85,7 +85,7 @@ public class _11_FindFirstIntersectNode {
         ////////////////用来计算两条链的长度
         while (tailHead1 != null) {
             head1Length++;
-            tailHead1 = tailHead2.next;
+            tailHead1 = tailHead1.next;
         }
         while (tailHead2 != null) {
             head2Length++;
@@ -114,7 +114,76 @@ public class _11_FindFirstIntersectNode {
         return tailHead1;
     }
 
+    /**
+     * 两个都有环的情况，三种拓扑图：1.（6 6 不相交），2.（R）快慢节点做法和无环相交一致，3.（\O/） 剩下1,3。用排除法：取一条链的相交节点一直next（往下遍历），如果撞到另一条链的相交节点就是第三种，否则就是第一种返回null。
+     *
+     * @param head1 链1
+     * @param loop1 链1的环交点
+     * @param head2 链2
+     * @param loop2 链2的环交点
+     * @return
+     */
+    public static Node bothLoop(Node head1, Node loop1, Node head2, Node loop2) {
+        Node cur1 = null;
+        Node cur2 = null;
+        if (loop1 == loop2) {  //表示是第二种拓扑结构，就使用快慢节点
+            cur1 = head1;
+            cur2 = head2;
+            int n = 0;
+            while (cur1 != loop1) {  //以环节点为终点
+                n++;
+                cur1 = cur1.next;
+            }
+            while (cur2 != loop2) {
+                n--;
+                cur2 = cur2.next;
+            }
+            cur1 = n >= 0 ? head1 : head2;  // 表示长链
+            cur2 = cur1 == head1 ? head2 : head1;  // 表示短链
+            n = Math.abs(n);
+            while (n != 0) {
+                n--;
+                cur1 = cur1.next;
+            }
+            while (cur1 != cur2) {
+                cur1 = cur1.next;
+                cur2 = cur2.next;
+            }
+            return cur2;
+        }else{  // 判断是第一种拓扑还是第二种拓扑，通过看图就能看出来，只需取一条链的相交节点一直next（往下遍历），如果撞到另一条链的相交节点就是第三种
+            cur1=loop1.next;
+            while(cur1!=loop1){
+                if(cur1==loop2){  //撞上了就是第三种情况
+                    return cur1;
+                }
+                cur1=cur1.next;
+            }
+            return null;
+        }
+    }
+
+    /**
+     * 最终判断两条链是否相交
+     */
+    public static Node isIntersectNode(Node head1,Node head2){
+        if (head1 == null || head2 == null) {
+            return null;
+        }
+        Node loop1=getLoopWithFastAndSlow(head1);
+        Node loop2=getLoopWithSet(head2);
+        if (loop1 == null && loop2 == null) {  // 无环相交
+            return noLoop(head1,head2);
+        }
+        if (loop1 != null && loop2 != null) {  // 有环相交
+            return bothLoop(head1,loop1,head2,loop2);
+        }
+        return null;
+
+
+    }
+
     public static void main(String[] args) {
+        // 1->2->3->4->5->6->7->null
         Node head1 = new Node(1);
         head1.next = new Node(2);
         head1.next.next = new Node(3);
@@ -122,9 +191,37 @@ public class _11_FindFirstIntersectNode {
         head1.next.next.next.next = new Node(5);
         head1.next.next.next.next.next = new Node(6);
         head1.next.next.next.next.next.next = new Node(7);
+
+        // 0->9->8->6->7->null
+        Node head2 = new Node(0);
+        head2.next = new Node(9);
+        head2.next.next = new Node(8);
+        head2.next.next.next = head1.next.next.next.next.next; // 8->6
+        System.out.println(isIntersectNode(head1, head2).value);
+
+        // 1->2->3->4->5->6->7->4...
+        head1 = new Node(1);
+        head1.next = new Node(2);
+        head1.next.next = new Node(3);
+        head1.next.next.next = new Node(4);
+        head1.next.next.next.next = new Node(5);
+        head1.next.next.next.next.next = new Node(6);
+        head1.next.next.next.next.next.next = new Node(7);
         head1.next.next.next.next.next.next = head1.next.next.next; // 7->4
-        Node loopWithSet = getLoopWithSet(head1);
-        System.out.println(loopWithSet.value);
+
+        // 0->9->8->2...
+        head2 = new Node(0);
+        head2.next = new Node(9);
+        head2.next.next = new Node(8);
+        head2.next.next.next = head1.next; // 8->2
+        System.out.println(isIntersectNode(head1, head2).value);
+
+        // 0->9->8->6->4->5->6..
+        head2 = new Node(0);
+        head2.next = new Node(9);
+        head2.next.next = new Node(8);
+        head2.next.next.next = head1.next.next.next.next.next; // 8->6
+        System.out.println(isIntersectNode(head1, head2).value);
 
     }
 }
