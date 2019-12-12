@@ -12,7 +12,7 @@ public class _6_JosephusKill {
         }
         Node last = head;  //找到整个环的最后一个节点
 
-        while (last != head) {  //先找到
+        while (last != head) {  //先找到最后一个节点
             last = last.next;
         }
         int count = 0;
@@ -27,5 +27,8 @@ public class _6_JosephusKill {
         }
 
         return head;  // 仅剩的一个节点
+    }
+    public static void main(String[] args){
+
     }
 }

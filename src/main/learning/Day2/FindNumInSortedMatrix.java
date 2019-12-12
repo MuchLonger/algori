@@ -1,7 +1,7 @@
 package learning.Day2;
 
 /**
- * @description: 在一个排好序的数组中找到指定值 O（N）
+ * @description: 在一个排好序的二维数组中找到指定值 O（N）
  * 排好序的数组：即上下都有序。如：
  * 1 3 5 7
  * 2 5 6 9
