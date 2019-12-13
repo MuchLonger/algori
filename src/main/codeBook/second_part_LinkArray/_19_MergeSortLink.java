@@ -8,7 +8,7 @@ package codeBook.second_part_LinkArray;
  * 4）最后把剩余一条链整条复制到另一条先结束的链。（因为总有先结束的一条链）
  * @Time: 2019/12/12 11:37
  */
-public class _19_mergeSortLink {
+public class _19_MergeSortLink {
 
     public static Node mergeSortLink(Node n1, Node n2) {
         if (n1 == null || n2 == null)  // 如果有一个为空，就返回另外一个节点

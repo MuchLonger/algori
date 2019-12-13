@@ -71,7 +71,7 @@ public class PreInPosTraversal {
         System.out.println("先序遍历：");
         if(head!=null){
             Stack<Node> stack=new Stack<>();
-            stack.add(head);  //首节点压栈
+            stack.push(head);  //首节点压栈
             while(!stack.isEmpty()){  //不为空就遍历，因为会一个一个输出，所以条件是栈不为空
                 head=stack.pop();  //将节点从栈取出，
                 System.out.print(head.value+" ");  //输出
@@ -123,15 +123,15 @@ public class PreInPosTraversal {
             return;
         Stack<Node> preStack=new Stack<>();  // 存入先序遍历的值 的栈
         Stack<Node> posStack=new Stack<>();  // 将先序遍历的值放入，再取出就是后序遍历
-        preStack.add(head);  //从第一个节点开始
+        preStack.push(head);  //从第一个节点开始
         while(!preStack.isEmpty()){
             head=preStack.pop();
-            posStack.add(head);
+            posStack.push(head);
             if(head.left!=null){  //先存左节点，最后先输出的就是右节点！！
-                preStack.add(head.left);  //不依靠.next，依靠栈的取出存入
+                preStack.push(head.left);  //不依靠.next，依靠栈的取出存入
             }
             if(head.right!=null){
-                preStack.add(head.right);
+                preStack.push(head.right);
             }
         }
         while(!posStack.isEmpty()){

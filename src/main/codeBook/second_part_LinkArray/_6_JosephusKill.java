@@ -6,13 +6,13 @@ package codeBook.second_part_LinkArray;
  * @Time: 2019/12/5 16:50
  */
 public class _6_JosephusKill {
-    public Node josephusKill(Node head, int k) {
+    public static Node josephusKill(Node head, int k) {
         if (head == null || head.next == head || k < 1) { //不为空，不为空环，k不小于1
             throw new RuntimeException("参数出错");
         }
         Node last = head;  //找到整个环的最后一个节点
 
-        while (last != head) {  //先找到最后一个节点
+        while (last.next != head) {  //先找到最后一个节点
             last = last.next;
         }
         int count = 0;
@@ -29,6 +29,12 @@ public class _6_JosephusKill {
         return head;  // 仅剩的一个节点
     }
     public static void main(String[] args){
-
+        Node n1 = new Node(7);
+        n1.next = new Node(4);
+        n1.next.next = new Node(2);
+        n1.next.next.next = new Node(35);
+        n1.next.next.next.next = new Node(12);
+        n1.next.next.next.next =n1;
+        System.out.println(josephusKill(n1, 1).value);
     }
 }

@@ -54,6 +54,7 @@ public class _15_BSTConvertDoubleNode {
         tn.left.left=new TreeNode(2);
         tn.left.right=new TreeNode(5);
         tn.right.right=new TreeNode(9);
+        tn.right.right.left=new TreeNode(8);
         tn.left.left.left=new TreeNode(1);
         tn.left.left.right=new TreeNode(3);
         _2_RemoveLastLinkArray.printLinkedList(convert1(tn));
