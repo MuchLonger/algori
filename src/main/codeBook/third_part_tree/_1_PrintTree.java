@@ -32,6 +32,7 @@ public class _1_PrintTree {
         Stack<Node> stack = new Stack<>();
         stack.push(root);  // 实战的时候就会知道为什么在这里add：因为下面是 !stack.isEmpty()
         while (!stack.isEmpty()) {
+            // 不像递归那样会回退到某个节点，因为存入的left节点会立刻pop出去，最后left到底之后，栈内就全都是right节点，继续重复判断并插入left和right类推。
             Node node = stack.pop();
             System.out.print(node.value+" ");
             if (node.right != null) {  // 先压入右再压左，下一次取出的还是左节点
@@ -74,10 +75,10 @@ public class _1_PrintTree {
             if (root != null) {  // （左或右）节点不为空就压栈
                 stack.push(root);
                 root = root.left;
-            } else {
-                root = stack.pop();  // 取出左节点输出
+            } else {  // 当root为空的时候就会执行，这样可以保证先输出左节点（即左节点遍历到底了）
+                root = stack.pop();  // 取出左节点输出,
                 System.out.print(root.value + " ");  //这个时候输出
-                root = root.right;  // 右节点继续上面操作
+                root = root.right;  // 并且左节点为空就切换到右节点，插入操作由不等于空 (root!=null) 的时候做，
             }
         }
     }
