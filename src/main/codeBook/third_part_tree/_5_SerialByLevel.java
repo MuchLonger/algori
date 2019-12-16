@@ -72,6 +72,8 @@ public class _5_SerialByLevel {
             return null;
         return new Node(Integer.valueOf(val));
     }
+    public static void main(String[] args){
 
+    }
 
 }

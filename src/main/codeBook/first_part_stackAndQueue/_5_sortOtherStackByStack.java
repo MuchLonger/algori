@@ -26,5 +26,7 @@ public class _5_SortOtherStackByStack {
             stack.push(helpStack.pop());
         }
     }
+    public static void main(String[] args){
 
+    }
 }
