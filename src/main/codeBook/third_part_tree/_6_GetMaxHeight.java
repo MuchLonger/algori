@@ -2,6 +2,7 @@ package codeBook.third_part_tree;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * @description: 给定一颗二叉树，求累加和为k的最长路径长度。其中路径指的是 每次最多选择一个孩子节点或者不选择节点而形成的链
@@ -47,8 +48,8 @@ public class _6_GetMaxHeight {
         maxLength = preOrder(head.left, k, curSum, level + 1, maxLength, map);
         maxLength = preOrder(head.right, k, curSum, level + 1, maxLength, map);
 
-        // 每次递归的退出都需要清除“当前累加和”对应的路径。因为这是递归添加的，而map内一个值只需要添加最早加入那个即可，
-        // 防止数据冲突，因为可能会将小值给覆盖掉了（会将最长的路径给覆盖掉）
+        // 每次递归的退出都需要清除“当前累加和”对应的路径。防止数据冲突，因为可能会将小值给覆盖掉了：map内一个值只需要添加最早加入那个即可，
+        // 或者说，一个map仅给一整条完整路径使用，如果不删除当前层的节点，会影响后半条路径的使用。这样就能实现每个节点取或不取
         if (level == map.get(curSum)) {
             map.remove(curSum);
         }
@@ -58,8 +59,8 @@ public class _6_GetMaxHeight {
     /**
      *           6
      *      4         7
-     *   2   5      9
-     * 1 3       8
+     *   2   5           9
+     * 1 3             8
      */
     public static void main(String[] args) {
         Node tn = new Node(6);
