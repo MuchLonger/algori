@@ -44,6 +44,7 @@ public class _10_PrintByZigZag {
 
         while (!dq.isEmpty()) {
             if (l2r) {
+                // 正序，从头取出、尾插入，先插入左再插入右。就像平常的队列一样
                 head = dq.pollFirst();
                 if (head.left != null) {
                     // 第一个进入队列的就是下一行的结束节点。
@@ -55,6 +56,7 @@ public class _10_PrintByZigZag {
                     dq.offerLast(head.right);
                 }
             } else {
+                // 逆序，从尾取出、头插入，先插入右再插入左。与上面完全相反
                 head = dq.pollLast();
                 if (head.right != null) {
                     // 第一个进入队列的就是下一行的结束节点。
@@ -69,7 +71,7 @@ public class _10_PrintByZigZag {
             System.out.print(head.value + " ");
             if (head == last && !dq.isEmpty()) {
                 l2r = !l2r;  // 逆序
-                last = moveLast;
+                last = moveLast;  // 设置下一层的结束节点
                 moveLast = null;  // 至为null，不然触发不了三目
                 System.out.println();
                 printLevelAndOrientation(level++, l2r);  // 打印下一行

@@ -17,7 +17,7 @@ public class _7_BiggestSubBST {
      * 需要求出 左、右子树中最大二叉树的头结点（不一定就是左右子树的头结点），左右子树的节点数，以及左、右子树的最小值和最大值。
      * 通过这四个值递归可以判断左右两边谁是最大二叉搜索树，亦或是当前节点就是最大二叉树。
      * <p>
-     * 具体操作：先递归左子树 找到每个节点的节点信息：最大二叉树的头结点、节点数、最小值、最大值，再递归找右子树的。
+     * 具体操作：先递归左子树 找到每个节点的节点信息：二叉搜索树的头结点、二叉搜索树的节点数、最小值、最大值，再递归找右子树的。
      * 比较这些信息：
      *  如果当前节点可以是二叉搜索树那就返回当前节点，
      *  如果不是那就返回左右二叉搜索树较多节点的头结点。
@@ -36,14 +36,14 @@ public class _7_BiggestSubBST {
         int value = head.value;
 
         Node left = head.left;
-        // 求出左子树点的节点信息：最大二叉树的头结点、最小值、最大值、节点数
+        // 求出左子树点的节点信息：二叉搜索树的头结点、二叉搜索树节点数、最小值、最大值
         Node leftBST = posOrder(left, record);  // 找到左子树的一颗二叉搜索树（不一定正好就是左子树(head.left)）
         int leftSize = record[0];
         int leftMin = record[1];  // 为null就是Integer.MAX_VALUE，即将最小值置为integer的最大值，这样任何值都会比它小了
         int leftMax = record[2];
 
         Node right = head.right;
-        // 求出右子树点的节点信息：头结点、最小值、最大值、节点数
+        // 求出右子树点的节点信息：二叉搜索树头结点、二叉搜索树的节点数、最小值、最大值
         Node rightBST = posOrder(right, record); // 找到右子树的一颗二分搜索树
         int rightSize = record[0];
         int rightMin = record[1];
@@ -60,7 +60,7 @@ public class _7_BiggestSubBST {
         }
 
         /*            取左子树节点或右子树节点              */
-        // 如果到达这里就表示当前节点不是二叉搜索树，于是就比较左右子树，谁节点数大谁就是最大二叉搜索树
+        // 如果到达这里就表示当前节点不是二叉搜索树，于是就比较左右子树，谁二叉树节点数多谁就是最大二叉搜索树
         record[0] = Math.max(leftSize, rightSize);  // 存入一颗子树的最大值就是最大节点数
         return leftSize > rightSize ? leftBST : rightBST;
     }
