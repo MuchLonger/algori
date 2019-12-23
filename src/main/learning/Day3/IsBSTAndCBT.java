@@ -1,5 +1,6 @@
 package learning.Day3;
 
+
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -128,7 +129,7 @@ public class IsBSTAndCBT {
             head = queue.poll();  //取出节点
             leftNode = head.left;
             rightNode = head.right;
-            if (state && (leftNode != null || rightNode != null)   //这个是条件二开启的情况下，判断往下的节点是否是叶节点，如果不是叶节点就返回false
+            if ((state && (leftNode != null || rightNode != null))   //这个是条件二开启的情况下，判断往下的节点是否是叶节点，如果不是叶节点就返回false
                     || (leftNode == null && rightNode != null)) {   //这个条件是判断条件一（左节点为null右节点不为null）是否符合，如果符合也不是完全二叉树
                 return false;
             }
@@ -166,7 +167,19 @@ public class IsBSTAndCBT {
         head.right.right = new Node(10);
         head.right.right.left = new Node(9);
         head.right.right.right = new Node(11);
-        System.out.println(isBstCur1(head));
+
+        /**
+         *             6
+         *       4         7
+         *    2   5
+         */
+        Node tn = new Node(6);
+        tn.left = new Node(4);
+        tn.right = new Node(7);
+        tn.left.left = new Node(2);
+        tn.left.right = new Node(5);
+
+        System.out.println(isCBT(tn));
     }
 
 }
