@@ -27,7 +27,7 @@ public class CompleteTreeNodeNum {
      * 递归求出完全二叉树的节点数
      *
      * 基本思想：先判断“当前节点的右节点的最左节点”是否到达了树的最后一层：
-     * 1）如果“右节点的最左节点(12)”到了最后一层，那毫无疑问当前节点的左节点是一颗满二叉树
+     * 1）如果“右节点的最左节点(12)”到了最后一层，对于一棵完全二叉树来说，那毫无疑问“当前节点的左节点”是一颗满二叉树
      * 即：从当前节点+1层到最后一层的满二叉树，参考下面的树就是从2所在层到8所在层都是满二叉树。（2 4 5 8 9 10 11 12）
      *          1
      *      2       3
@@ -72,7 +72,7 @@ public class CompleteTreeNodeNum {
     public static int mostLeftLevel(Node node,int level){
         while(node!=null){
             level++;
-            node=node.left;   //只需找最左边即可
+            node=node.left;   //只需找最左边即可，因为最左边是第一个节点
         }
         return level-1;  //注意-1
     }
